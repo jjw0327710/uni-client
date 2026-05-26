@@ -1,12 +1,13 @@
 {
   "name": "uni-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "UNI Game Launcher",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --win --x64",
-    "build:portable": "electron-builder --win portable --x64"
+    "build:portable": "electron-builder --win portable --x64",
+    "release": "powershell -ExecutionPolicy Bypass -File release.ps1"
   },
   "build": {
     "appId": "com.uni.client",
@@ -42,10 +43,19 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "UNI Client"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "jjw0327710",
+      "repo": "uni-client"
     }
   },
   "devDependencies": {
     "electron": "^42.0.0",
     "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
   }
 }
+
