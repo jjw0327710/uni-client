@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNI — 로그인</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet" />
+</head>
+<body class="login-body">
+
+  <!-- 타이틀바 -->
+  <div class="titlebar">
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-btns">
+      <button onclick="window.uni.minimize()" class="tb-btn tb-min">─</button>
+      <button onclick="window.uni.close()"    class="tb-btn tb-close">✕</button>
+    </div>
+  </div>
+
+  <div class="login-wrap">
+    <!-- 왼쪽: 검정 (나중에 이미지 삽입 예정) -->
+    <div class="login-brand"></div>
+
+    <!-- 오른쪽 폼 -->
+    <div class="login-form-side">
+      <div class="login-form-box" id="login-box">
+
+        <!-- 로고 -->
+        <div class="form-logo-row">
+          <img src="../assets/logo.png" class="form-logo-img" alt="UNI" onerror="this.style.display='none'" />
+          <span class="form-logo-text">UNI</span>
+        </div>
+
+        <h2 class="login-title">로그인</h2>
+        <div id="login-error" class="form-error" style="display:none"></div>
+
+        <div class="form-group">
+          <label>아이디</label>
+          <input type="text" id="login-email" placeholder="아이디 입력" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <div class="input-pw-wrap">
+            <input type="password" id="login-pw" placeholder="비밀번호 입력" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+            <button type="button" class="pw-toggle" onclick="togglePw('login-pw',this)">보기</button>
+          </div>
+        </div>
+
+        <div class="form-group remember-row">
+          <label class="remember-label">
+            <input type="checkbox" id="remember-me" checked />
+            <span>로그인 상태 유지</span>
+          </label>
+        </div>
+
+        <button class="btn-primary full" onclick="doLogin()">로그인</button>
+        <p class="form-switch">계정이 없으신가요? <a href="#" onclick="showSignup()">무료 가입</a></p>
+      </div>
+
+      <!-- 회원가입 폼 -->
+      <div class="login-form-box" id="signup-box" style="display:none">
+        <div class="form-logo-row">
+          <img src="../assets/logo.png" class="form-logo-img" alt="UNI" onerror="this.style.display='none'" />
+          <span class="form-logo-text">UNI</span>
+        </div>
+
+        <h2 class="login-title">회원 가입</h2>
+        <div id="signup-error" class="form-error" style="display:none"></div>
+
+        <div class="form-group">
+          <label>아이디</label>
+          <input type="text" id="signup-id" placeholder="아이디 입력" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="signup-email" placeholder="이메일 입력" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <div class="input-pw-wrap">
+            <input type="password" id="signup-pw" placeholder="비밀번호 6자 이상" autocomplete="new-password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('signup-pw',this)">보기</button>
+          </div>
+        </div>
+
+        <button class="btn-primary full" onclick="doSignup()">가입하기</button>
+        <p class="form-switch">이미 계정이 있으신가요? <a href="#" onclick="showLogin()">로그인</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePw(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = '숨기기'; }
+      else { input.type = 'password'; btn.textContent = '보기'; }
+    }
+
+    function showSignup() {
+      document.getElementById('login-box').style.display  = 'none';
+      document.getElementById('signup-box').style.display = '';
+    }
+    function showLogin() {
+      document.getElementById('signup-box').style.display = 'none';
+      document.getElementById('login-box').style.display  = '';
+    }
+
+    async function doLogin() {
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-pw').value;
+      const remember = document.getElementById('remember-me').checked;
+      const errEl    = document.getElementById('login-error');
+      errEl.style.display = 'none';
+      if (!email || !password) { errEl.textContent = '아이디와 비밀번호를 입력하세요.'; errEl.style.display = ''; return; }
+      const res = await window.uni.login({ username: email, password, remember });
+      if (!res.ok) { errEl.textContent = res.error; errEl.style.display = ''; return; }
+      window.uni.navigate('launcher.html');
+    }
+    async function doSignup() {
+      const username = document.getElementById('signup-id').value.trim();
+      const email    = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-pw').value;
+      const errEl    = document.getElementById('signup-error');
+      errEl.style.display = 'none';
+      if (!username || !email || !password) { errEl.textContent = '모든 항목을 입력하세요.'; errEl.style.display = ''; return; }
+      if (password.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 합니다.'; errEl.style.display = ''; return; }
+      const res = await window.uni.signup({ username, email, password });
+      if (!res.ok) { errEl.textContent = res.error; errEl.style.display = ''; return; }
+      window.uni.navigate('launcher.html');
+    }
+  </script>
+</body>
+</html>

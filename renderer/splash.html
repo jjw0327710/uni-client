@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>UNI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* 로고 — 처음엔 화면 정중앙에 절대 위치 */
+    .logo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      height: 320px;
+      object-fit: contain;
+
+      /* 중앙 기준점 */
+      transform: translate(-50%, -50%) scale(0.75);
+      opacity: 0;
+      animation: logoAppear 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Phase 2: 로고가 왼쪽으로 이동 — opacity 1 유지 */
+    .logo.shift {
+      animation: logoMove 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      opacity: 1;
+    }
+
+    /* UNI 텍스트 — 처음엔 완전히 숨김 */
+    .brand-text {
+      position: fixed;
+      top: 50%;
+      /* 로고 중심(-142) + 로고반폭(160) + gap(24) = 중앙+42px */
+      left: calc(50% + 42px);
+      transform: translateY(-50%) translateX(50px);
+      opacity: 0;
+
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 175px;
+      font-weight: 400;
+      letter-spacing: 10px;
+      line-height: 1;
+      background: linear-gradient(90deg, #a855f7 0%, #7B2FFF 35%, #3b82f6 65%, #00E5FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand-text.reveal {
+      animation: textReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    body.fade-out {
+      animation: fadeOut 0.5s ease forwards;
+    }
+
+    /* 로고: 중앙 등장 */
+    @keyframes logoAppear {
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* 로고: 중앙 → 왼쪽으로 슬라이드 (opacity 명시해서 사라지지 않게)
+       text-left = 50%+42px, logo-half=160 → logo-center = 50%-142px */
+    @keyframes logoMove {
+      from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      to {
+        opacity: 1;
+        transform: translate(calc(-50% - 142px), -50%) scale(1);
+      }
+    }
+
+    /* 텍스트: 오른쪽에서 슬라이드인 */
+    @keyframes textReveal {
+      from { opacity: 0; transform: translateY(-50%) translateX(50px); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <img src="../assets/logo.png" class="logo" id="logo" alt="UNI"
+       onerror="this.style.display='none'" />
+  <div class="brand-text" id="brand-text">UNI</div>
+
+  <script>
+    const logo      = document.getElementById('logo');
+    const brandText = document.getElementById('brand-text');
+
+    // Phase 1: 로고 등장 (0.3s~1.0s)
+    // Phase 2: 1.4s에 로고 이동 + 텍스트 동시 등장
+    setTimeout(() => {
+      logo.classList.add('shift');
+      brandText.classList.add('reveal');
+    }, 1400);
+
+    // 페이드아웃 후 런처 열기
+    setTimeout(() => {
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.uni && window.uni.splashReady();
+      }, 500);
+    }, 3300);
+  </script>
+</body>
+</html>
