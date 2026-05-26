@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNI Client</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d14;
+      color: #e8e8f0;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(91,108,249,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(91,108,249,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
+      margin: 0 auto 28px;
+      display: block;
+      box-shadow: 0 8px 32px rgba(91,108,249,0.35);
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 40%, #8b9dff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .sub {
+      font-size: 16px;
+      color: #8888aa;
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #5b6cf9, #4a5ce8);
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      box-shadow: 0 4px 24px rgba(91,108,249,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-bottom: 14px;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(91,108,249,0.6);
+    }
+
+    .btn-download:active { transform: translateY(0); }
+
+    .btn-download svg { flex-shrink: 0; }
+
+    .btn-portable {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #aaaacc;
+      text-decoration: none;
+      padding: 11px 26px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-portable:hover {
+      background: rgba(255,255,255,0.1);
+      color: #e8e8f0;
+    }
+
+    .version {
+      margin-top: 36px;
+      font-size: 12px;
+      color: #555577;
+    }
+
+    .features {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .feat-tag {
+      background: rgba(91,108,249,0.12);
+      border: 1px solid rgba(91,108,249,0.25);
+      color: #8b9dff;
+      padding: 5px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="container">
+    <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI Client" class="logo">
+    <h1>UNI Client</h1>
+    <p class="sub">마인크래프트 전용 런처<br>Microsoft 계정으로 바로 시작하세요.</p>
+
+    <div class="features">
+      <span class="feat-tag">Fabric 지원</span>
+      <span class="feat-tag">좌표·방향 표시</span>
+      <span class="feat-tag">성능 최적화</span>
+      <span class="feat-tag">Simple Voice Chat</span>
+      <span class="feat-tag">스크린샷</span>
+    </div>
+
+    <div>
+      <a class="btn-download" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI%20Client%20Setup%201.0.0.exe">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        다운로드 (설치 버전)
+      </a>
+      <br>
+      <a class="btn-portable" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI%20Client%201.0.0.exe">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        포터블 버전 (설치 없이 실행)
+      </a>
+    </div>
+
+    <p class="version">v1.0.0 · Windows x64 · Electron 42</p>
+  </div>
+</body>
+</html>
