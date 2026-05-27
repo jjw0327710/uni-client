@@ -1,6 +1,6 @@
 {
   "name": "uni-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "UNI Game Launcher",
   "main": "main.js",
   "scripts": {
