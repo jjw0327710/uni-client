@@ -44,7 +44,7 @@ Invoke-Expression "gh release create v$newVersion $assetStr --title `"UNI Client
 $websiteDir = "..\uni-website"
 if (Test-Path "$websiteDir\index.html") {
     Write-Host "웹사이트 링크 업데이트 중..." -ForegroundColor Yellow
-    $html = Get-Content "$websiteDir\index.html" -Raw
+    $html = Get-Content "$websiteDir\index.html" -Raw -Encoding UTF8
     $html = $html -replace 'UNI\.Client\.Setup\.\d+\.\d+\.\d+\.exe', "UNI.Client.Setup.$newVersion.exe"
     $html = $html -replace 'UNI\.Client\.\d+\.\d+\.\d+\.zip', "UNI.Client.$newVersion.zip"
     $html = $html -replace 'v\d+\.\d+\.\d+ · Windows', "v$newVersion · Windows"
