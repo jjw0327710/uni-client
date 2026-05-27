@@ -40,6 +40,24 @@ if (Test-Path $latestYml) { $assets += "`"$latestYml`"" }
 $assetStr = $assets -join ' '
 Invoke-Expression "gh release create v$newVersion $assetStr --title `"UNI Client v$newVersion`" --notes `"UNI Client v$newVersion 업데이트`""
 
+# 웹사이트 다운로드 링크 버전 업데이트
+$websiteDir = "..\uni-website"
+if (Test-Path "$websiteDir\index.html") {
+    Write-Host "웹사이트 링크 업데이트 중..." -ForegroundColor Yellow
+    $html = Get-Content "$websiteDir\index.html" -Raw
+    $html = $html -replace 'UNI\.Client\.Setup\.\d+\.\d+\.\d+\.exe', "UNI.Client.Setup.$newVersion.exe"
+    $html = $html -replace 'UNI\.Client\.\d+\.\d+\.\d+\.zip', "UNI.Client.$newVersion.zip"
+    $html = $html -replace 'v\d+\.\d+\.\d+ · Windows', "v$newVersion · Windows"
+    [System.IO.File]::WriteAllText((Resolve-Path "$websiteDir\index.html"), $html, [System.Text.UTF8Encoding]::new($false))
+
+    Push-Location $websiteDir
+    git add index.html
+    git commit -m "v$newVersion"
+    git push origin main:gh-pages
+    Pop-Location
+    Write-Host "웹사이트 업데이트 완료" -ForegroundColor Green
+}
+
 # git에도 버전 커밋
 git add package.json
 git commit -m "v$newVersion"

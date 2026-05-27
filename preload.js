@@ -54,4 +54,13 @@ contextBridge.exposeInMainWorld('uni', {
   // Screenshots
   getScreenshots:           (id) => ipcRenderer.invoke('get-screenshots', id),
   openScreenshotsFolder:    (id) => ipcRenderer.invoke('open-screenshots-folder', id),
+  getAppVersion:            ()   => ipcRenderer.invoke('get-app-version'),
+  onUpdateStatus:           (cb) => ipcRenderer.on('update-status', (_, d) => cb(d)),
+  installUpdate:            ()   => ipcRenderer.invoke('install-update'),
+  // Presets (묶음 파일)
+  getPresets:       ()    => ipcRenderer.invoke('get-presets'),
+  savePreset:       (p)   => ipcRenderer.invoke('save-preset', p),
+  deletePreset:     (id)  => ipcRenderer.invoke('delete-preset', id),
+  applyPreset:      (d)   => ipcRenderer.invoke('apply-preset', d),
+  onPresetProgress: (cb)  => ipcRenderer.on('preset-progress', (_, d) => cb(d)),
 });

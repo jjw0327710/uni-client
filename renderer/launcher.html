@@ -102,7 +102,8 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
 /* ═══ HOME ═══ */
 .h-top { display:grid; grid-template-columns:1fr 240px 240px; gap:14px; margin-bottom:14px; }
 .h-qp { position:relative; border-radius:var(--r); overflow:hidden; min-height:230px;
-  display:flex; flex-direction:column; justify-content:flex-end; background:#0d2040; }
+  display:flex; flex-direction:column; justify-content:flex-end;
+  background: linear-gradient(135deg, #0a1f3a 0%, #0f2d54 30%, #153050 60%, #08192e 100%); }
 .h-qp .ov { position:absolute; inset:0;
   background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.15) 100%); }
 .h-qp .cw { position:relative; z-index:2; padding:20px; }
@@ -269,6 +270,16 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
 </head>
 <body>
 
+<!-- UPDATE BANNER -->
+<div id="update-banner" style="display:none;position:fixed;top:36px;left:0;right:0;z-index:200;
+  background:linear-gradient(90deg,#1e1b4b,#1e3a5f);border-bottom:1px solid rgba(91,108,249,.4);
+  padding:9px 20px;display:none;align-items:center;gap:12px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  <span style="flex:1;font-size:13px;color:#bfdbfe;" id="update-banner-msg">업데이트가 준비됐습니다. 재시작하면 적용됩니다.</span>
+  <button onclick="window.uni.installUpdate()" style="background:#3b82f6;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:12px;font-weight:700;cursor:pointer;">지금 재시작</button>
+  <button onclick="document.getElementById('update-banner').style.display='none'" style="background:transparent;color:#60a5fa;border:none;font-size:18px;cursor:pointer;padding:0 4px;line-height:1;">×</button>
+</div>
+
 <!-- TITLEBAR -->
 <div class="titlebar">
   <div class="drag"></div>
@@ -288,7 +299,7 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
       </div>
       <div>
         <div class="s-logo-text">Uni</div>
-        <div class="s-logo-ver">v1.0.0</div>
+        <div class="s-logo-ver" id="app-version">v1.0.1</div>
       </div>
     </div>
 
@@ -311,14 +322,17 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
       <div class="ni" data-p="screenshots">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>스크린샷
       </div>
-      <div class="ni" data-p="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>설정
-      </div>
       <div class="ni" data-p="mods">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>모드
       </div>
       <div class="ni" data-p="resourcepacks">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>리소스팩
+      </div>
+      <div class="ni" data-p="files">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>파일
+      </div>
+      <div class="ni" data-p="settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>설정
       </div>
     </div>
 
@@ -402,15 +416,17 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
         <!-- Profile card -->
         <div class="card" style="display:flex;flex-direction:column;">
           <div class="sec-t" style="margin-bottom:12px;">내 프로필</div>
-          <div id="profile-skin-preview" style="height:100px;background:linear-gradient(135deg,#1a1f35,#111828);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;position:relative;">
-            <img src="../assets/alex.png" id="profile-skin-img" style="height:90px;image-rendering:pixelated;display:none;" alt="">
-            <svg id="profile-default-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div style="display:flex;justify-content:center;margin-bottom:14px;">
+            <div class="bsk-box" style="width:80px;height:80px;cursor:default;border-color:rgba(91,108,249,.3);">
+              <img id="profile-skin-img" alt="" style="display:none;">
+              <svg id="profile-default-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="1.5" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:7px;flex:1;">
             <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text3);">닉네임</span><span id="profile-name" style="font-weight:600;">-</span></div>
             <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text3);">계정 유형</span><span id="profile-type" style="font-weight:600;">-</span></div>
           </div>
-          <button class="btn btn-g" style="width:100%;justify-content:center;margin-top:10px;" onclick="showLoginOverlay()">계정 변경</button>
+          <button class="btn btn-g" style="width:100%;justify-content:center;margin-top:10px;" onclick="nav('play')">프로필 변경</button>
         </div>
 
         <!-- Shortcuts -->
@@ -806,8 +822,8 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
             <div id="cape-item" style="display:none;">
               <div style="display:flex;gap:12px;align-items:flex-end;">
                 <div class="bsk-i" onclick="selectCape()">
-                  <div style="width:80px;height:80px;border-radius:6px;background:#1a2035;border:2px solid transparent;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;" id="cape-box">
-                    <img id="cape-preview-img" src="" alt="Cape" style="width:100%;height:auto;image-rendering:pixelated;">
+                  <div style="width:110px;height:80px;border-radius:6px;background:#1a2035;border:2px solid transparent;overflow:hidden;display:flex;align-items:center;justify-content:center;" id="cape-box">
+                    <img id="cape-preview-img" src="" alt="Cape" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated;">
                   </div>
                   <span style="font-size:11px;color:var(--text2);">내 망토</span>
                 </div>
@@ -836,6 +852,28 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
         </div>
       </div>
       <div class="ss-grid" id="ss-grid"></div>
+    </div>
+
+    <!-- FILES (묶음 파일) -->
+    <div id="page-files" class="page">
+      <div class="ph">
+        <div><div class="pt">묶음 파일</div><div class="ps">모드와 리소스팩을 묶어 한 번에 적용하세요.</div></div>
+        <button class="btn btn-p" onclick="openPresetModal(null)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          새 묶음 만들기
+        </button>
+      </div>
+      <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M7 7V5a2 2 0 012-2h6a2 2 0 012 2v2"/></svg>
+        <span id="files-profile-name" style="color:var(--text1);">활성 프로파일 없음 — 플레이 탭에서 프로파일을 선택하세요.</span>
+      </div>
+      <div id="preset-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;"></div>
+      <div id="preset-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text3);">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:12px;opacity:.4"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px;color:var(--text2);">묶음 파일이 없습니다</div>
+        <div style="font-size:13px;margin-bottom:16px;">포켓몬, PvP 등 자주 쓰는 조합을 묶어 저장해두세요.</div>
+        <button class="btn btn-p" onclick="openPresetModal(null)">새 묶음 만들기</button>
+      </div>
     </div>
 
     <!-- SETTINGS -->
@@ -878,6 +916,39 @@ html,body { height:100%; background:var(--bg); color:var(--text1);
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button class="btn btn-g" onclick="closeServerModal()">취소</button>
       <button class="btn btn-p" onclick="confirmAddServer()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRESET MODAL -->
+<div id="preset-modal" class="overlay" style="display:none;">
+  <div class="modal" style="width:560px;max-height:85vh;overflow-y:auto;">
+    <div class="modal-title" id="preset-modal-title">새 묶음 파일 만들기</div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:5px;">묶음 이름</label>
+      <input id="preset-name-inp" type="text" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text1);font-size:14px;" placeholder="예: 포켓몬, PvP 세트">
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>모드</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="preset-mod-search" type="text" style="flex:1;background:var(--bg-card2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text1);font-size:13px;" placeholder="Modrinth에서 모드 검색..." onkeydown="if(event.key==='Enter')searchPresetMod()">
+        <button class="btn btn-p" style="padding:6px 14px;" onclick="searchPresetMod()">검색</button>
+      </div>
+      <div id="preset-mod-results" style="max-height:130px;overflow-y:auto;margin-bottom:8px;"></div>
+      <div id="preset-draft-mods" style="background:rgba(255,255,255,.03);border-radius:6px;padding:8px;min-height:34px;"></div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>리소스팩</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="preset-rp-search" type="text" style="flex:1;background:var(--bg-card2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text1);font-size:13px;" placeholder="Modrinth에서 리소스팩 검색..." onkeydown="if(event.key==='Enter')searchPresetRp()">
+        <button class="btn btn-p" style="padding:6px 14px;" onclick="searchPresetRp()">검색</button>
+      </div>
+      <div id="preset-rp-results" style="max-height:130px;overflow-y:auto;margin-bottom:8px;"></div>
+      <div id="preset-draft-rps" style="background:rgba(255,255,255,.03);border-radius:6px;padding:8px;min-height:34px;"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-g" onclick="closePresetModal()">취소</button>
+      <button class="btn btn-p" onclick="savePresetDraft()">저장</button>
     </div>
   </div>
 </div>
@@ -964,11 +1035,13 @@ function updateFeaturesProfileInfo() {
 
 function updateModsRpsProfileInfo() {
   const p = profiles.find(x => x.id === activeProfileId);
-  const modsEl = document.getElementById('mods-profile-name');
-  const rpsEl  = document.getElementById('rps-profile-name');
+  const modsEl  = document.getElementById('mods-profile-name');
+  const rpsEl   = document.getElementById('rps-profile-name');
+  const filesEl = document.getElementById('files-profile-name');
   const txt = p ? `활성 프로파일: ${p.name} · MC ${p.mcVersion}${p.useFabric ? ' Fabric' : ' Vanilla'}` : '활성 프로파일 없음 — 플레이 탭에서 프로파일을 만드세요.';
-  if (modsEl) modsEl.textContent = txt;
-  if (rpsEl)  rpsEl.textContent  = txt;
+  if (modsEl)  modsEl.textContent  = txt;
+  if (rpsEl)   rpsEl.textContent   = txt;
+  if (filesEl) filesEl.textContent = p ? `활성 프로파일: ${p.name} · MC ${p.mcVersion}` : '활성 프로파일 없음 — 플레이 탭에서 프로파일을 선택하세요.';
 }
 
 function addMsSkinToList(skinUrl) {
@@ -990,16 +1063,188 @@ function addMsSkinToList(skinUrl) {
   pendingApplySkinUrl = skinUrl;
 }
 
+// ═══ PRESETS (묶음 파일) ═══
+let presets = [];
+let presetDraft = { name: '', mods: [], rps: [] };
+
+async function loadPresets() {
+  presets = await window.uni.getPresets();
+  renderPresets();
+}
+
+function renderPresets() {
+  const grid  = document.getElementById('preset-grid');
+  const empty = document.getElementById('preset-empty');
+  if (!grid) return;
+  if (!presets.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = presets.map(p => `
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,rgba(91,108,249,.2),rgba(6,182,212,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">모드 ${p.mods?.length||0}개 · 리소스팩 ${p.rps?.length||0}개</div>
+        </div>
+      </div>
+      <div id="preset-bar-${p.id}" style="display:none;">
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:4px;"><div id="preset-fill-${p.id}" style="height:100%;background:var(--primary);border-radius:2px;width:0%;transition:width .3s;"></div></div>
+        <div id="preset-txt-${p.id}" style="font-size:11px;color:var(--text3);"></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-p" style="flex:1;justify-content:center;font-size:12px;" onclick="applyPreset('${p.id}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 적용하기
+        </button>
+        <button class="btn btn-s" style="font-size:11px;" onclick="openPresetModal('${p.id}')">편집</button>
+        <button class="btn btn-s" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:11px;" onclick="deletePreset('${p.id}')">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+async function applyPreset(presetId) {
+  if (!activeProfileId) { alert('플레이 탭에서 프로파일을 먼저 선택하세요.'); return; }
+  const p = profiles.find(x => x.id === activeProfileId);
+  if (!p) return;
+  const bar = document.getElementById(`preset-bar-${presetId}`);
+  if (bar) bar.style.display = '';
+  const res = await window.uni.applyPreset({ presetId, profileId: activeProfileId, mcVersion: p.mcVersion });
+  const fill = document.getElementById(`preset-fill-${presetId}`);
+  const txt  = document.getElementById(`preset-txt-${presetId}`);
+  if (res.ok) {
+    if (fill) fill.style.width = '100%';
+    if (txt)  txt.textContent = '적용 완료!';
+    setTimeout(() => { if (bar) bar.style.display = 'none'; }, 2000);
+  } else {
+    if (txt) txt.textContent = '오류: ' + res.error;
+  }
+}
+
+function openPresetModal(presetId) {
+  const existing = presetId ? presets.find(p => p.id === presetId) : null;
+  presetDraft = existing ? JSON.parse(JSON.stringify(existing)) : { id: null, name: '', mods: [], rps: [] };
+  document.getElementById('preset-modal-title').textContent = presetId ? '묶음 파일 편집' : '새 묶음 파일 만들기';
+  document.getElementById('preset-name-inp').value = presetDraft.name || '';
+  document.getElementById('preset-mod-results').innerHTML = '';
+  document.getElementById('preset-rp-results').innerHTML  = '';
+  renderPresetMods(); renderPresetRps();
+  document.getElementById('preset-modal').style.display = 'flex';
+}
+
+function closePresetModal() {
+  document.getElementById('preset-modal').style.display = 'none';
+}
+
+function renderPresetMods() {
+  const el = document.getElementById('preset-draft-mods');
+  if (!el) return;
+  if (!presetDraft.mods?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 0;">선택된 모드 없음</div>'; return; }
+  el.innerHTML = presetDraft.mods.map((m, i) => `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+    <span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.displayName||m.slug}</span>
+    <button class="btn btn-s" style="color:var(--red);border-color:rgba(239,68,68,.3);padding:2px 7px;font-size:11px;" onclick="removePresetMod(${i})">×</button>
+  </div>`).join('');
+}
+
+function renderPresetRps() {
+  const el = document.getElementById('preset-draft-rps');
+  if (!el) return;
+  if (!presetDraft.rps?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 0;">선택된 리소스팩 없음</div>'; return; }
+  el.innerHTML = presetDraft.rps.map((r, i) => `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    <span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.displayName||r.slug}</span>
+    <button class="btn btn-s" style="color:var(--red);border-color:rgba(239,68,68,.3);padding:2px 7px;font-size:11px;" onclick="removePresetRp(${i})">×</button>
+  </div>`).join('');
+}
+
+function removePresetMod(i) { presetDraft.mods.splice(i, 1); renderPresetMods(); }
+function removePresetRp(i)  { presetDraft.rps.splice(i, 1);  renderPresetRps(); }
+
+async function searchPresetMod() {
+  const q = document.getElementById('preset-mod-search').value.trim(); if (!q) return;
+  const el = document.getElementById('preset-mod-results');
+  el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px;">검색 중...</div>';
+  try {
+    const res  = await fetch(`https://api.modrinth.com/v2/search?query=${encodeURIComponent(q)}&facets=%5B%5B%22project_type%3Amod%22%5D%2C%5B%22categories%3Afabric%22%5D%5D&limit=5`);
+    const data = await res.json();
+    if (!data.hits?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px;">결과 없음</div>'; return; }
+    el.innerHTML = data.hits.map(h => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+      ${h.icon_url ? `<img src="${h.icon_url}" style="width:30px;height:30px;border-radius:4px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">` : ''}
+      <div style="flex:1;min-width:0;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h.title}</div>
+      <button class="btn btn-p" style="padding:2px 8px;font-size:11px;" onclick="addPresetMod('${h.slug}','${h.title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">추가</button>
+    </div>`).join('');
+  } catch { el.innerHTML = '<div style="font-size:12px;color:var(--red);padding:4px;">검색 실패</div>'; }
+}
+
+async function searchPresetRp() {
+  const q = document.getElementById('preset-rp-search').value.trim(); if (!q) return;
+  const el = document.getElementById('preset-rp-results');
+  el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px;">검색 중...</div>';
+  try {
+    const res  = await fetch(`https://api.modrinth.com/v2/search?query=${encodeURIComponent(q)}&facets=%5B%5B%22project_type%3Aresourcepack%22%5D%5D&limit=5`);
+    const data = await res.json();
+    if (!data.hits?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px;">결과 없음</div>'; return; }
+    el.innerHTML = data.hits.map(h => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+      ${h.icon_url ? `<img src="${h.icon_url}" style="width:30px;height:30px;border-radius:4px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">` : ''}
+      <div style="flex:1;min-width:0;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h.title}</div>
+      <button class="btn btn-p" style="padding:2px 8px;font-size:11px;" onclick="addPresetRp('${h.slug}','${h.title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">추가</button>
+    </div>`).join('');
+  } catch { el.innerHTML = '<div style="font-size:12px;color:var(--red);padding:4px;">검색 실패</div>'; }
+}
+
+function addPresetMod(slug, name) {
+  if (!presetDraft.mods.some(m => m.slug === slug)) { presetDraft.mods.push({ slug, displayName: name }); renderPresetMods(); }
+}
+function addPresetRp(slug, name) {
+  if (!presetDraft.rps.some(r => r.slug === slug)) { presetDraft.rps.push({ slug, displayName: name }); renderPresetRps(); }
+}
+
+async function savePresetDraft() {
+  const name = document.getElementById('preset-name-inp').value.trim();
+  if (!name) { alert('묶음 파일 이름을 입력하세요.'); return; }
+  const preset = { id: presetDraft.id || String(Date.now()), name, mods: presetDraft.mods||[], rps: presetDraft.rps||[] };
+  await window.uni.savePreset(preset);
+  closePresetModal();
+  await loadPresets();
+}
+
+async function deletePreset(presetId) {
+  if (!confirm('이 묶음 파일을 삭제하시겠습니까?')) return;
+  await window.uni.deletePreset(presetId);
+  presets = presets.filter(p => p.id !== presetId);
+  renderPresets();
+}
+
+window.uni.onPresetProgress(({ presetId, msg, pct }) => {
+  const fill = document.getElementById(`preset-fill-${presetId}`);
+  const txt  = document.getElementById(`preset-txt-${presetId}`);
+  if (fill) fill.style.width = pct + '%';
+  if (txt)  txt.textContent  = msg;
+});
+
 async function init() {
+  window.uni.getAppVersion().then(v => {
+    const el = document.getElementById('app-version');
+    if (el) el.textContent = 'v' + v;
+  }).catch(() => {});
+
+  window.uni.onUpdateStatus((data) => {
+    if (data.downloaded) {
+      const banner = document.getElementById('update-banner');
+      if (banner) banner.style.display = 'flex';
+    }
+  });
+
   currentSession = await window.uni.getSession();
   const settings = await window.uni.getSettings();
 
   const ramVal = settings.ram || 4;
   setRamSlider(document.getElementById('ram-sl'), document.getElementById('ram-num'), ramVal);
-
-  // Set banner image
-  const banner = document.getElementById('home-banner');
-  if (banner) { banner.style.backgroundImage = "url('../assets/mc-banner.png')"; banner.style.backgroundSize = 'cover'; banner.style.backgroundPosition = 'center'; }
 
   if (currentSession) {
     updateSessionUI(currentSession);
@@ -1047,6 +1292,8 @@ async function init() {
 
   // Server list
   loadServerList();
+
+  // Presets loaded on demand via loadPresets()
 
   // Skin viewer is initialized lazily when skin page is opened
 }
@@ -1762,20 +2009,18 @@ function nav(p) {
   if (p === 'mods') { updateModsRpsProfileInfo(); loadModList(); }
   if (p === 'resourcepacks') { updateModsRpsProfileInfo(); loadRpList(); }
   if (p === 'screenshots') loadScreenshots();
+  if (p === 'files') { updateModsRpsProfileInfo(); loadPresets(); }
 }
 document.querySelectorAll('.ni').forEach(n => n.addEventListener('click', () => nav(n.dataset.p)));
 
 // ═══ TOGGLE (features) ═══
 function initFeatureStates() {
-  const p = profiles.find(x => x.id === activeProfileId);
-  const feats = p?.features || {};
   ['coords', 'optimize'].forEach(f => {
     const el = document.getElementById(`feat-${f}`);
     if (!el) return;
     const lbl = el.nextElementSibling;
-    const on = !!feats[f];
-    el.classList.toggle('on', on);
-    if (lbl) { lbl.textContent = on ? 'ON' : 'OFF'; lbl.style.color = on ? 'var(--primary)' : 'var(--text3)'; }
+    el.classList.remove('on');
+    if (lbl) { lbl.textContent = 'OFF'; lbl.style.color = 'var(--text3)'; }
   });
 }
 
@@ -1839,20 +2084,8 @@ async function initVoiceChat() {
   const toggle = document.getElementById('svc-toggle');
   const lbl = document.getElementById('svc-lbl');
   if (!toggle) return;
-  if (!activeProfileId) {
-    toggle.classList.remove('on');
-    lbl.textContent = 'OFF'; lbl.style.color = 'var(--text3)';
-    return;
-  }
-  const mods = await window.uni.getProfileMods(activeProfileId);
-  const installed = mods.some(f => f.startsWith('voicechat'));
-  if (installed) {
-    toggle.classList.add('on');
-    lbl.textContent = 'ON'; lbl.style.color = 'var(--primary)';
-  } else {
-    toggle.classList.remove('on');
-    lbl.textContent = 'OFF'; lbl.style.color = 'var(--text3)';
-  }
+  toggle.classList.remove('on');
+  if (lbl) { lbl.textContent = 'OFF'; lbl.style.color = 'var(--text3)'; }
 }
 
 async function toggleVoiceChat(el) {

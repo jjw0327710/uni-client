@@ -93,6 +93,32 @@
     @keyframes fadeOut {
       to { opacity: 0; }
     }
+
+    .status-text {
+      position: fixed;
+      bottom: 18px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.5px;
+      transition: opacity 0.3s;
+    }
+
+    .progress-wrap {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .progress-line {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #3b82f6, #00E5FF);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
   </style>
 </head>
 <body>
@@ -100,9 +126,27 @@
        onerror="this.style.display='none'" />
   <div class="brand-text" id="brand-text">UNI</div>
 
+  <div class="status-text" id="status-text"></div>
+  <div class="progress-wrap">
+    <div class="progress-line" id="progress-line"></div>
+  </div>
+
   <script>
     const logo      = document.getElementById('logo');
     const brandText = document.getElementById('brand-text');
+    const statusEl  = document.getElementById('status-text');
+    const progressEl = document.getElementById('progress-line');
+
+    let progressVal = 0;
+    function setProgress(pct) {
+      progressVal = pct;
+      if (progressEl) progressEl.style.width = pct + '%';
+    }
+
+    // 기본 진행바 애니메이션
+    setTimeout(() => setProgress(30), 300);
+    setTimeout(() => setProgress(60), 1000);
+    setTimeout(() => setProgress(85), 2200);
 
     // Phase 1: 로고 등장 (0.3s~1.0s)
     // Phase 2: 1.4s에 로고 이동 + 텍스트 동시 등장
@@ -111,12 +155,23 @@
       brandText.classList.add('reveal');
     }, 1400);
 
+    // 업데이트 상태 수신
+    if (window.uni && window.uni.onUpdateStatus) {
+      window.uni.onUpdateStatus((data) => {
+        if (statusEl && data.msg) statusEl.textContent = data.msg;
+        if (data.pct !== undefined) setProgress(data.pct);
+      });
+    }
+
     // 페이드아웃 후 런처 열기
     setTimeout(() => {
-      document.body.classList.add('fade-out');
+      setProgress(100);
       setTimeout(() => {
-        window.uni && window.uni.splashReady();
-      }, 500);
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.uni && window.uni.splashReady();
+        }, 500);
+      }, 300);
     }, 3300);
   </script>
 </body>

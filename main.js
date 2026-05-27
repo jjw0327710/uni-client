@@ -1,11 +1,12 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
 const { spawn } = require('child_process');
+const { autoUpdater } = require('electron-updater');
 
-let USER_DATA_PATH, SESSION_PATH, SETTINGS_PATH, MC_DIR, PROFILES_PATH, SERVERS_PATH;
+let USER_DATA_PATH, SESSION_PATH, SETTINGS_PATH, MC_DIR, PROFILES_PATH, SERVERS_PATH, PRESETS_PATH;
 
 function initPaths() {
   USER_DATA_PATH = path.join(app.getPath('userData'), 'users.json');
@@ -13,6 +14,7 @@ function initPaths() {
   SETTINGS_PATH  = path.join(app.getPath('userData'), 'settings.json');
   PROFILES_PATH  = path.join(app.getPath('userData'), 'profiles.json');
   SERVERS_PATH   = path.join(app.getPath('userData'), 'servers.json');
+  PRESETS_PATH   = path.join(app.getPath('userData'), 'presets.json');
   MC_DIR         = path.join(app.getPath('userData'), 'minecraft');
   ['versions','libraries','assets/indexes','assets/objects','assets/log_configs','profiles','runtime']
     .forEach(d => fs.mkdirSync(path.join(MC_DIR, d), { recursive: true }));
@@ -77,7 +79,47 @@ function createMain() {
   mainWin.loadFile('renderer/launcher.html');
 }
 
-app.whenReady().then(() => { initPaths(); createSplash(); createMain(); });
+function checkInstallMarker() {
+  if (!app.isPackaged) return;
+  try {
+    const markerPath = path.join(path.dirname(process.execPath), '.uni-marker');
+    if (!fs.existsSync(markerPath)) {
+      if (SESSION_PATH && fs.existsSync(SESSION_PATH)) fs.unlinkSync(SESSION_PATH);
+      try { fs.writeFileSync(markerPath, app.getVersion(), 'utf8'); } catch {}
+    }
+  } catch {}
+}
+
+app.whenReady().then(() => {
+  initPaths();
+  checkInstallMarker();
+  createSplash();
+  createMain();
+
+  autoUpdater.checkForUpdates().catch(() => {});
+
+  autoUpdater.on('update-available', (info) => {
+    if (splashWin && !splashWin.isDestroyed())
+      splashWin.webContents.send('update-status', { msg: `v${info.version} 다운로드 중...` });
+  });
+
+  autoUpdater.on('download-progress', (prog) => {
+    const pct = Math.floor(prog.percent);
+    const msg = `업데이트 다운로드 중... ${pct}%`;
+    if (splashWin && !splashWin.isDestroyed())
+      splashWin.webContents.send('update-status', { msg, pct });
+    if (mainWin && !mainWin.isDestroyed())
+      mainWin.webContents.send('update-status', { msg, pct });
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    if (mainWin && !mainWin.isDestroyed())
+      mainWin.webContents.send('update-status', { downloaded: true });
+  });
+
+  autoUpdater.on('error', () => {});
+});
+
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
 
 // ── HTTP helpers ──
@@ -196,6 +238,8 @@ ipcMain.handle('save-settings', (_, data) => {
 });
 
 // ── Server IPC ──
+ipcMain.handle('get-app-version', () => app.getVersion());
+ipcMain.handle('install-update', () => autoUpdater.quitAndInstall());
 ipcMain.handle('get-servers', () => loadServers());
 ipcMain.handle('save-server', (_, server) => {
   const servers = loadServers();
@@ -570,6 +614,54 @@ ipcMain.handle('install-profile-rp', async (_, { profileId, slug }) => {
   } catch (e) { return { ok: false, error: e.message }; }
 });
 
+// ── Presets (묶음 파일) ──
+function loadPresetsFile() {
+  try { return JSON.parse(fs.readFileSync(PRESETS_PATH, 'utf8')); } catch { return []; }
+}
+function savePresetsFile(d) { fs.writeFileSync(PRESETS_PATH, JSON.stringify(d, null, 2), 'utf8'); }
+
+ipcMain.handle('get-presets', () => loadPresetsFile());
+
+ipcMain.handle('save-preset', (_, preset) => {
+  const data = loadPresetsFile();
+  const idx = data.findIndex(p => p.id === preset.id);
+  if (idx >= 0) data[idx] = preset; else data.push(preset);
+  savePresetsFile(data);
+  return { ok: true };
+});
+
+ipcMain.handle('delete-preset', (_, id) => {
+  savePresetsFile(loadPresetsFile().filter(p => p.id !== id));
+  return { ok: true };
+});
+
+ipcMain.handle('apply-preset', async (_, { presetId, profileId, mcVersion }) => {
+  const preset = loadPresetsFile().find(p => p.id === presetId);
+  if (!preset) return { ok: false, error: '프리셋 없음' };
+  const send = (msg, pct) => mainWin?.webContents.send('preset-progress', { presetId, msg, pct });
+  try {
+    const modDir = profileModsDir(profileId);
+    const rpDir  = profileRpDir(profileId);
+    fs.mkdirSync(modDir, { recursive: true });
+    fs.mkdirSync(rpDir, { recursive: true });
+    const mods = preset.mods || [], rps = preset.rps || [];
+    const total = mods.length + rps.length || 1;
+    let done = 0;
+    for (const m of mods) {
+      send(`${m.displayName || m.slug} 설치 중...`, Math.floor((done / total) * 90));
+      try { await installModrinthMod(m.slug, mcVersion, modDir); } catch {}
+      done++;
+    }
+    for (const r of rps) {
+      send(`${r.displayName || r.slug} 설치 중...`, Math.floor((done / total) * 90));
+      try { await installModrinthRp(r.slug, rpDir); } catch {}
+      done++;
+    }
+    send('적용 완료!', 100);
+    return { ok: true };
+  } catch (e) { return { ok: false, error: e.message }; }
+});
+
 ipcMain.handle('remove-mod-by-id', (_, { profileId, prefix }) => {
   const dir = profileId ? profileModsDir(profileId) : path.join(MC_DIR, 'game', 'mods');
   try {
@@ -720,11 +812,15 @@ ipcMain.handle('launch-mc', async (_, { profileId }) => {
     fs.mkdirSync(nativesDir, { recursive: true });
     const classpath = [jarPath];
 
-    // If Fabric: load Fabric JSON and merge libs
+    // If Fabric: load Fabric JSON and merge libs — skip if mods folder is empty
     let launchJson = vanillaJson;
     let mainClass = vanillaJson.mainClass || 'net.minecraft.client.main.Main';
 
-    if (useFabric && fabricVersionId) {
+    const _modsDir = profileModsDir(profileId);
+    let _hasMods = false;
+    try { _hasMods = fs.readdirSync(_modsDir).some(f => f.endsWith('.jar')); } catch {}
+
+    if (useFabric && fabricVersionId && _hasMods) {
       const fJsonPath = path.join(MC_DIR, 'versions', fabricVersionId, `${fabricVersionId}.json`);
       if (fs.existsSync(fJsonPath)) {
         const fabricJson = JSON.parse(fs.readFileSync(fJsonPath, 'utf8'));
