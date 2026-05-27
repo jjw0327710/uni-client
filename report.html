@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>신고 센터 — UNI Client</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png">
+  <style>
+    :root {
+      --primary:#5b6cf9; --primary-light:#7b8cff;
+      --bg:#0b0b12; --surface:#12121e; --surface2:#1a1a2e;
+      --border:rgba(255,255,255,0.08);
+      --text1:#f0f0f8; --text2:#9090b8; --text3:#555570;
+      --green:#4ade80; --yellow:#fbbf24; --red:#f87171;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text1);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+    /* HEADER */
+    header{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(11,11,18,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100;}
+    .back-link{display:flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-size:14px;transition:color .15s;min-width:100px;}
+    .back-link:hover{color:var(--text1);}
+    .header-center{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;}
+    .header-center img{width:28px;height:28px;border-radius:7px;}
+    .user-bar{display:flex;align-items:center;gap:10px;min-width:100px;justify-content:flex-end;}
+    .user-badge{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 12px;}
+    .user-avatar{width:24px;height:24px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+    .user-name{font-size:13px;color:var(--text2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .logout-btn{background:transparent;border:1px solid var(--border);color:var(--text2);padding:5px 12px;border-radius:7px;font-size:12px;cursor:pointer;transition:all .15s;font-family:inherit;}
+    .logout-btn:hover{border-color:rgba(248,113,113,0.4);color:var(--red);}
+
+    main{padding-top:64px;min-height:100vh;}
+
+    /* LOGIN */
+    #login-section{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 64px);padding:40px 24px;}
+    .login-card{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;}
+    .login-title{font-size:24px;font-weight:800;margin-bottom:6px;}
+    .login-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.5;}
+    .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:white;color:#1f1f1f;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .15s;font-family:inherit;margin-bottom:20px;}
+    .google-btn:hover{opacity:.9;}
+    .or-divider{display:flex;align-items:center;gap:12px;color:var(--text3);font-size:13px;margin-bottom:20px;}
+    .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .auth-tabs{display:flex;background:var(--surface2);border-radius:10px;padding:3px;margin-bottom:20px;}
+    .auth-tab{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:inherit;}
+    .auth-tab.active{background:var(--surface);color:var(--text1);}
+    .form-group{margin-bottom:14px;}
+    .form-group label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px;}
+    .form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text1);font-size:14px;font-family:inherit;padding:10px 14px;outline:none;transition:border-color .15s;}
+    .form-group input:focus{border-color:var(--primary);}
+    .auth-submit{width:100%;background:linear-gradient(135deg,#5b6cf9,#4a5ce0);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;font-family:inherit;}
+    .auth-submit:hover{opacity:.85;}
+    .err-box{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none;}
+
+    /* REPORT SECTION */
+    #report-section{max-width:760px;margin:0 auto;padding:32px 24px 64px;display:none;}
+    .tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:28px;width:fit-content;}
+    .tab-btn{padding:9px 20px;border-radius:9px;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s;border:none;background:transparent;font-family:inherit;}
+    .tab-btn.active{background:var(--surface2);color:var(--text1);}
+    .tab-btn:hover:not(.active){color:var(--text1);}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
+
+    /* REPORT FORM */
+    .report-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;}
+    .report-card h3{font-size:18px;font-weight:700;margin-bottom:24px;}
+    .rf-group{margin-bottom:16px;}
+    .rf-group label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px;}
+    .rf-group input,.rf-group select,.rf-group textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text1);font-size:14px;font-family:inherit;padding:10px 14px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none;}
+    .rf-group input:focus,.rf-group select:focus,.rf-group textarea:focus{border-color:var(--primary);}
+    .rf-group textarea{resize:vertical;min-height:140px;}
+    .rf-group select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239090b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+    .rf-submit{width:100%;background:linear-gradient(135deg,#5b6cf9,#4a5ce0);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;font-family:inherit;margin-top:4px;}
+    .rf-submit:hover{opacity:.85;}
+    .rf-submit:disabled{opacity:.5;cursor:not-allowed;}
+
+    /* SUCCESS */
+    .report-success{text-align:center;padding:40px 16px;display:none;}
+    .check-circle{width:64px;height:64px;border-radius:50%;background:rgba(74,222,128,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+    .report-success h4{font-size:20px;font-weight:700;margin-bottom:8px;}
+    .report-success p{font-size:14px;color:var(--text2);margin-bottom:20px;}
+    .another-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:10px 24px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+    .another-btn:hover{color:var(--text1);border-color:rgba(255,255,255,0.15);}
+
+    /* REPORTS LIST */
+    .reports-list{display:flex;flex-direction:column;gap:12px;}
+    .report-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
+    .report-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+    .report-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .r-ver{background:rgba(91,108,249,0.12);color:var(--primary-light);font-size:12px;font-weight:700;padding:3px 10px;border-radius:5px;}
+    .r-cat{background:rgba(255,255,255,0.06);color:var(--text2);font-size:12px;font-weight:600;padding:3px 10px;border-radius:5px;}
+    .r-date{font-size:12px;color:var(--text3);}
+    .status-badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:6px;white-space:nowrap;}
+    .s-접수됨{background:rgba(255,255,255,0.06);color:var(--text2);}
+    .s-확인중{background:rgba(251,191,36,0.12);color:var(--yellow);}
+    .s-처리완료{background:rgba(74,222,128,0.12);color:var(--green);}
+    .r-desc{font-size:14px;color:var(--text2);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+    .r-sub{font-size:12px;color:var(--text3);margin-top:8px;}
+    .status-select{background:var(--surface2);border:1px solid var(--border);color:var(--text1);font-size:12px;font-family:inherit;padding:4px 28px 4px 10px;border-radius:6px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239090b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+    .empty-state{text-align:center;padding:60px 24px;color:var(--text3);font-size:15px;}
+    .empty-state svg{margin-bottom:12px;opacity:.3;display:block;margin-left:auto;margin-right:auto;}
+    .loading{text-align:center;padding:40px;color:var(--text3);font-size:14px;}
+
+    @media(max-width:600px){
+      header{padding:0 16px;}
+      .header-center span{display:none;}
+      #report-section{padding:20px 16px 48px;}
+      .login-card{padding:28px 24px;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="/">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    메인으로
+  </a>
+  <div class="header-center">
+    <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI">
+    <span>신고 센터</span>
+  </div>
+  <div id="user-bar" class="user-bar" style="display:none;">
+    <div class="user-badge">
+      <div class="user-avatar" id="user-avatar">U</div>
+      <span class="user-name" id="user-name-el"></span>
+    </div>
+    <button class="logout-btn" id="logout-btn">로그아웃</button>
+  </div>
+  <div id="header-spacer" style="min-width:100px;"></div>
+</header>
+
+<main>
+  <!-- 로그인 -->
+  <div id="login-section">
+    <div class="login-card">
+      <h2 class="login-title">신고 센터</h2>
+      <p class="login-sub">로그인하고 버그를 신고하거나<br>내 신고 내역을 확인하세요.</p>
+
+      <button class="google-btn" id="google-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Google로 계속하기
+      </button>
+
+      <div class="or-divider">또는</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">로그인</button>
+        <button class="auth-tab" id="tab-signup">회원가입</button>
+      </div>
+
+      <div class="err-box" id="auth-err"></div>
+
+      <div class="form-group">
+        <label>이메일</label>
+        <input type="email" id="inp-email" placeholder="example@email.com" autocomplete="email">
+      </div>
+      <div class="form-group" id="name-group" style="display:none;">
+        <label>닉네임</label>
+        <input type="text" id="inp-name" placeholder="표시될 이름">
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="inp-pw" placeholder="6자 이상" autocomplete="current-password">
+      </div>
+      <button class="auth-submit" id="auth-submit">로그인</button>
+    </div>
+  </div>
+
+  <!-- 신고 페이지 -->
+  <div id="report-section">
+    <div class="tabs" id="main-tabs">
+      <button class="tab-btn active" data-tab="tab-report">신고하기</button>
+      <button class="tab-btn" data-tab="tab-mine">내 신고함</button>
+    </div>
+
+    <!-- 신고하기 -->
+    <div class="tab-content active" id="tab-report">
+      <div class="report-card">
+        <h3>버그 / 건의 신고</h3>
+        <div id="report-success" class="report-success">
+          <div class="check-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h4>신고가 접수됐습니다!</h4>
+          <p>확인 후 빠르게 처리하겠습니다.</p>
+          <button class="another-btn" id="another-btn">다른 신고하기</button>
+        </div>
+        <div id="report-form-wrap">
+          <div class="err-box" id="report-err"></div>
+          <div class="rf-group">
+            <label>닉네임 (선택)</label>
+            <input type="text" id="rf-nick" placeholder="마인크래프트 닉네임">
+          </div>
+          <div class="rf-group">
+            <label>런처 버전 <span style="color:var(--red)">*</span></label>
+            <select id="rf-ver">
+              <option value="">버전 선택...</option>
+              <option>v1.0.6</option>
+              <option>v1.0.5</option>
+              <option>v1.0.4</option>
+              <option>v1.0.3</option>
+              <option>v1.0.2</option>
+              <option>v1.0.1</option>
+              <option>v1.0.0</option>
+            </select>
+          </div>
+          <div class="rf-group">
+            <label>유형 <span style="color:var(--red)">*</span></label>
+            <select id="rf-cat">
+              <option value="">선택...</option>
+              <option value="버그 신고">버그 신고</option>
+              <option value="기능 건의">기능 건의</option>
+              <option value="기타">기타 문의</option>
+            </select>
+          </div>
+          <div class="rf-group">
+            <label>내용 <span style="color:var(--red)">*</span></label>
+            <textarea id="rf-desc" placeholder="버그 발생 상황, 재현 방법, 오류 메시지 등을 상세히 적어주세요."></textarea>
+          </div>
+          <button class="rf-submit" id="rf-submit">신고하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 내 신고함 -->
+    <div class="tab-content" id="tab-mine">
+      <div id="my-list" class="reports-list">
+        <div class="loading">불러오는 중...</div>
+      </div>
+    </div>
+
+    <!-- 전체 신고함 (관리자 전용) -->
+    <div class="tab-content" id="tab-admin">
+      <div id="admin-list" class="reports-list">
+        <div class="loading">불러오는 중...</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
+           createUserWithEmailAndPassword, signInWithEmailAndPassword,
+           signOut, updateProfile }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, query, where,
+           orderBy, getDocs, doc, updateDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  // ====================================================
+  // Firebase 설정 — Firebase 콘솔에서 복사한 값으로 교체하세요
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkc3t31bUsDBHRB3CLIcEgRA-y7zCkILI",
+    authDomain: "uni-client-support-276e7.firebaseapp.com",
+    projectId: "uni-client-support-276e7",
+    storageBucket: "uni-client-support-276e7.firebasestorage.app",
+    messagingSenderId: "789509302900",
+    appId: "1:789509302900:web:2e901c03864233dba6bf21"
+  };
+  // ====================================================
+
+  const ADMIN = 'jjw0327710@gmail.com';
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  let me = null;
+  let signupMode = false;
+
+  const $ = id => document.getElementById(id);
+
+  // ---- Auth state ----
+  onAuthStateChanged(auth, user => {
+    me = user;
+    if (user) {
+      $('login-section').style.display  = 'none';
+      $('report-section').style.display = 'block';
+      $('user-bar').style.display       = 'flex';
+      $('header-spacer').style.display  = 'none';
+
+      const name = user.displayName || user.email.split('@')[0];
+      $('user-avatar').textContent  = name[0].toUpperCase();
+      $('user-name-el').textContent = name;
+
+      if (user.email === ADMIN && !$('tab-admin-btn')) {
+        const btn = document.createElement('button');
+        btn.className  = 'tab-btn';
+        btn.dataset.tab = 'tab-admin';
+        btn.id         = 'tab-admin-btn';
+        btn.textContent = '전체 신고함';
+        $('main-tabs').appendChild(btn);
+      }
+
+      loadMine();
+    } else {
+      $('login-section').style.display  = 'flex';
+      $('report-section').style.display = 'none';
+      $('user-bar').style.display       = 'none';
+      $('header-spacer').style.display  = 'block';
+    }
+  });
+
+  // ---- Google ----
+  $('google-btn').addEventListener('click', async () => {
+    try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+    catch(e) { showErr($('auth-err'), errMsg(e)); }
+  });
+
+  // ---- Auth tabs ----
+  $('tab-login').addEventListener('click', () => {
+    signupMode = false;
+    $('tab-login').classList.add('active');
+    $('tab-signup').classList.remove('active');
+    $('name-group').style.display = 'none';
+    $('auth-submit').textContent  = '로그인';
+    $('auth-err').style.display   = 'none';
+  });
+  $('tab-signup').addEventListener('click', () => {
+    signupMode = true;
+    $('tab-signup').classList.add('active');
+    $('tab-login').classList.remove('active');
+    $('name-group').style.display = 'block';
+    $('auth-submit').textContent  = '회원가입';
+    $('auth-err').style.display   = 'none';
+  });
+
+  // ---- Email auth ----
+  $('auth-submit').addEventListener('click', async () => {
+    const email = $('inp-email').value.trim();
+    const pw    = $('inp-pw').value;
+    const name  = $('inp-name').value.trim();
+    $('auth-err').style.display = 'none';
+    if (!email || !pw) { showErr($('auth-err'), '이메일과 비밀번호를 입력해 주세요.'); return; }
+    try {
+      if (signupMode) {
+        const cred = await createUserWithEmailAndPassword(auth, email, pw);
+        if (name) await updateProfile(cred.user, { displayName: name });
+      } else {
+        await signInWithEmailAndPassword(auth, email, pw);
+      }
+    } catch(e) { showErr($('auth-err'), errMsg(e)); }
+  });
+  [$('inp-email'), $('inp-pw'), $('inp-name')].forEach(el => {
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') $('auth-submit').click(); });
+  });
+
+  // ---- Logout ----
+  $('logout-btn').addEventListener('click', () => signOut(auth));
+
+  // ---- Tabs ----
+  $('main-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    $(btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'tab-mine')  loadMine();
+    if (btn.dataset.tab === 'tab-admin') loadAll();
+  });
+
+  // ---- Submit ----
+  $('rf-submit').addEventListener('click', async () => {
+    if (!me) return;
+    const ver  = $('rf-ver').value;
+    const cat  = $('rf-cat').value;
+    const desc = $('rf-desc').value.trim();
+    const nick = $('rf-nick').value.trim();
+    $('report-err').style.display = 'none';
+    if (!ver)  { showErr($('report-err'), '버전을 선택해 주세요.'); return; }
+    if (!cat)  { showErr($('report-err'), '유형을 선택해 주세요.'); return; }
+    if (!desc) { showErr($('report-err'), '내용을 입력해 주세요.'); return; }
+
+    const btn = $('rf-submit');
+    btn.disabled = true; btn.textContent = '접수 중...';
+    try {
+      await addDoc(collection(db, 'reports'), {
+        uid: me.uid, email: me.email,
+        displayName: me.displayName || nick || me.email.split('@')[0],
+        nickname: nick, version: ver, category: cat,
+        description: desc, timestamp: serverTimestamp(), status: '접수됨'
+      });
+      $('report-form-wrap').style.display = 'none';
+      $('report-success').style.display   = 'block';
+    } catch(e) {
+      showErr($('report-err'), '접수 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      btn.disabled = false; btn.textContent = '신고하기';
+    }
+  });
+
+  $('another-btn').addEventListener('click', () => {
+    $('report-success').style.display   = 'none';
+    $('report-form-wrap').style.display = 'block';
+    ['rf-nick','rf-ver','rf-cat','rf-desc'].forEach(id => $(id).value = '');
+    const btn = $('rf-submit');
+    btn.disabled = false; btn.textContent = '신고하기';
+  });
+
+  // ---- Load my reports ----
+  async function loadMine() {
+    if (!me) return;
+    const list = $('my-list');
+    list.innerHTML = '<div class="loading">불러오는 중...</div>';
+    try {
+      const q = query(collection(db, 'reports'), where('uid', '==', me.uid));
+      const snap = await getDocs(q);
+      if (snap.empty) { list.innerHTML = emptyHtml('아직 접수된 신고가 없습니다.'); return; }
+      const docs = [];
+      snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+      docs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+      list.innerHTML = '';
+      docs.forEach(d => list.appendChild(buildItem(d, false)));
+    } catch { list.innerHTML = emptyHtml('불러오기 실패. 새로고침 해 주세요.'); }
+  }
+
+  // ---- Load all (admin) ----
+  async function loadAll() {
+    if (!me || me.email !== ADMIN) return;
+    const list = $('admin-list');
+    list.innerHTML = '<div class="loading">불러오는 중...</div>';
+    try {
+      const q = query(collection(db, 'reports'), orderBy('timestamp', 'desc'));
+      const snap = await getDocs(q);
+      if (snap.empty) { list.innerHTML = emptyHtml('신고 내역이 없습니다.'); return; }
+      list.innerHTML = '';
+      snap.forEach(d => list.appendChild(buildItem({ id: d.id, ...d.data() }, true)));
+    } catch { list.innerHTML = emptyHtml('불러오기 실패. 새로고침 해 주세요.'); }
+  }
+
+  // ---- Build report item ----
+  function buildItem(data, isAdmin) {
+    const el = document.createElement('div');
+    el.className = 'report-item';
+    const ts = data.timestamp?.seconds
+      ? new Date(data.timestamp.seconds * 1000).toLocaleString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+      : '날짜 없음';
+    const status = data.status || '접수됨';
+    const statusHtml = isAdmin
+      ? `<select class="status-select" data-id="${data.id}">
+           <option${status==='접수됨'?' selected':''}>접수됨</option>
+           <option${status==='확인중'?' selected':''}>확인중</option>
+           <option${status==='처리완료'?' selected':''}>처리완료</option>
+         </select>`
+      : `<span class="status-badge s-${status}">${status}</span>`;
+    const subHtml = isAdmin
+      ? `<div class="r-sub">${esc(data.email)}${data.nickname ? ' · ' + esc(data.nickname) : ''}</div>`
+      : (data.nickname ? `<div class="r-sub">닉네임: ${esc(data.nickname)}</div>` : '');
+
+    el.innerHTML = `
+      <div class="report-item-header">
+        <div class="report-meta">
+          <span class="r-ver">${esc(data.version)}</span>
+          <span class="r-cat">${esc(data.category)}</span>
+          <span class="r-date">${ts}</span>
+        </div>
+        ${statusHtml}
+      </div>
+      <div class="r-desc">${esc(data.description)}</div>
+      ${subHtml}`;
+
+    if (isAdmin) {
+      el.querySelector('.status-select').addEventListener('change', async e => {
+        const ns = e.target.value;
+        try { await updateDoc(doc(db, 'reports', data.id), { status: ns }); }
+        catch { alert('상태 변경 실패'); e.target.value = status; }
+      });
+    }
+    return el;
+  }
+
+  function showErr(el, msg) { if (!msg) return; el.textContent = msg; el.style.display = 'block'; }
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function emptyHtml(msg) {
+    return `<div class="empty-state"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${msg}</div>`;
+  }
+  function errMsg(e) {
+    return ({
+      'auth/user-not-found':'가입된 계정이 없습니다.',
+      'auth/wrong-password':'비밀번호가 틀렸습니다.',
+      'auth/invalid-credential':'이메일 또는 비밀번호가 틀렸습니다.',
+      'auth/email-already-in-use':'이미 사용 중인 이메일입니다.',
+      'auth/invalid-email':'이메일 형식이 올바르지 않습니다.',
+      'auth/weak-password':'비밀번호는 6자 이상이어야 합니다.',
+      'auth/too-many-requests':'잠시 후 다시 시도해 주세요.',
+      'auth/popup-closed-by-user':'',
+      'auth/cancelled-popup-request':'',
+    })[e.code] || (e.message || '오류가 발생했습니다.');
+  }
+</script>
+</body>
+</html>
