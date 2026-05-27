@@ -289,7 +289,11 @@
       $('user-avatar').textContent  = name[0].toUpperCase();
       $('user-name-el').textContent = name;
 
-      if (user.email === ADMIN && !$('tab-admin-btn')) {
+      const existingAdminBtn = $('tab-admin-btn');
+    if (existingAdminBtn) existingAdminBtn.remove();
+    $('tab-admin').classList.remove('active');
+
+    if (user.email === ADMIN) {
         const btn = document.createElement('button');
         btn.className  = 'tab-btn';
         btn.dataset.tab = 'tab-admin';
