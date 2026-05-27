@@ -3,615 +3,532 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNI Client ??癲ル슢????????ш낄援θキ????Β?諭?/title>
-
-  <!-- SEO -->
-  <meta name="description" content="UNI Client?????嶺?癲ル슢????????ш낄援θキ????Β?諭????낇돲?? Microsoft ??節뚮쳮????⑥???袁⑸즴??繞??棺??짆??嶺뚮ㅏ援앯뵳??Fabric, ?濚밸Ŧ援앲짆?癲ル슔?됭짆??? ?????癲????癲ル슢?꾤땟????ｏ쭗???誘⑦쀦틦?????肉?????몃???筌뚯뼚???">
-  <meta name="keywords" content="癲ル슢????????ш낄援θキ????Β?諭? 癲ル슢????????ш낄援θキ? UNI Client, Fabric, 癲ル슢???먯물????Β?諭? minecraft launcher">
+  <title>UNI Client — 마인크래프트 런처</title>
+  <meta name="description" content="UNI Client는 마인크래프트 전용 런처입니다. Microsoft 계정 로그인, Fabric 자동 설치, 성능 최적화 모드를 지원합니다.">
+  <meta name="keywords" content="마인크래프트 런처, UNI Client, Fabric, 마인크래프트 모드, minecraft launcher">
   <meta name="author" content="UNI Client">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://uni-client.kro.kr">
-
-  <!-- Open Graph (?怨멸텭???㎟????뉙맇, ??釉먯뒠獒?熬곣뫀??? ???源낇꼧????怨?繞벿삳쎖????雅?퍔瑗띰㎖???????깅탿) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://uni-client.kro.kr">
-  <meta property="og:title" content="UNI Client ??癲ル슢????????ш낄援θキ????Β?諭?>
-  <meta property="og:description" content="???嶺?癲ル슢????????ш낄援θキ????Β?諭? Microsoft ??節뚮쳮????⑥???袁⑸즴??繞???筌믨퀣援???寃뗏?Fabric, 癲ル슔?됭짆???癲ル슢?꾤땟????ｏ쭗???誘⑦쀦틦??????몃???筌뚯뼚???">
+  <meta property="og:title" content="UNI Client — 마인크래프트 런처">
+  <meta property="og:description" content="마인크래프트 전용 런처. Microsoft 계정 로그인, Fabric 자동 설치, 성능 최적화 모드를 지원합니다.">
   <meta property="og:image" content="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:site_name" content="UNI Client">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="UNI Client ??癲ル슢????????ш낄援θキ????Β?諭?>
-  <meta name="twitter:description" content="???嶺?癲ル슢????????ш낄援θキ????Β?諭? Microsoft ??節뚮쳮????⑥???袁⑸즴??繞???筌믨퀣援??筌뚯뼚???">
+  <meta name="twitter:title" content="UNI Client — 마인크래프트 런처">
+  <meta name="twitter:description" content="마인크래프트 전용 런처. Microsoft 계정 로그인, Fabric 자동 설치, 성능 최적화 모드를 지원합니다.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png">
-
-  <!-- ??????(??怨쀫뮛???? ????ш끽維쀩?? -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png">
-
-  <!-- ???源낇꼧???????嶺뚮Ĳ?됮?-->
   <meta name="naver-site-verification" content="8256ca401e847bcab2cff6d0c5ef97579c4f54ed" />
   <style>
     :root {
-      --primary: #5b6cf9;
-      --primary-light: #7b8cff;
-      --bg: #0b0b12;
-      --surface: #12121e;
-      --surface2: #1a1a2e;
+      --primary: #5b6cf9; --primary-light: #7b8cff;
+      --bg: #0b0b12; --surface: #12121e; --surface2: #1a1a2e;
       --border: rgba(255,255,255,0.08);
-      --text1: #f0f0f8;
-      --text2: #9090b8;
-      --text3: #555570;
-      --green: #4ade80;
+      --text1: #f0f0f8; --text2: #9090b8; --text3: #555570;
+      --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: var(--bg);
-      color: var(--text1);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      overflow-x: hidden;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text1); font-family:'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
 
     /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      background: rgba(11,11,18,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text1);
-      text-decoration: none;
-    }
-
-    .nav-logo img { width: 32px; height: 32px; border-radius: 8px; }
-
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text2);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.15s;
-    }
-
-    .nav-links a:hover { color: var(--text1); }
-
-    .nav-dl {
-      background: var(--primary);
-      color: #fff;
-      text-decoration: none;
-      padding: 9px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: opacity 0.15s;
-    }
-
-    .nav-dl:hover { opacity: 0.85; }
+    nav { position:fixed; top:0; left:0; right:0; height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 48px; background:rgba(11,11,18,0.88); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); z-index:100; }
+    .nav-logo { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:700; color:var(--text1); text-decoration:none; }
+    .nav-logo img { width:32px; height:32px; border-radius:8px; }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { color:var(--text2); text-decoration:none; font-size:14px; transition:color .15s; }
+    .nav-links a:hover { color:var(--text1); }
+    .nav-dl { background:var(--primary); color:#fff; text-decoration:none; padding:9px 20px; border-radius:8px; font-size:14px; font-weight:600; transition:opacity .15s; }
+    .nav-dl:hover { opacity:.85; }
 
     /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 100px 24px 80px;
-      position: relative;
-    }
+    .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:100px 24px 80px; position:relative; }
+    .hero-bg { position:absolute; inset:0; background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,108,249,0.22) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 80% 100%, rgba(91,108,249,0.08) 0%, transparent 60%); pointer-events:none; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(91,108,249,0.12); border:1px solid rgba(91,108,249,0.3); color:var(--primary-light); padding:5px 14px; border-radius:20px; font-size:13px; margin-bottom:28px; }
+    .hero-badge span { width:6px; height:6px; background:var(--green); border-radius:50%; display:inline-block; }
+    .hero-logo { width:100px; height:100px; border-radius:24px; margin-bottom:32px; box-shadow:0 12px 48px rgba(91,108,249,0.4); }
+    .hero h1 { font-size:64px; font-weight:800; letter-spacing:-2px; line-height:1.1; background:linear-gradient(135deg, #fff 30%, #8b9dff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:20px; }
+    .hero p { font-size:18px; color:var(--text2); line-height:1.7; max-width:480px; margin:0 auto 48px; }
+    .hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .btn-main { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#5b6cf9,#4a5ce0); color:#fff; text-decoration:none; padding:16px 32px; border-radius:12px; font-size:16px; font-weight:700; box-shadow:0 4px 24px rgba(91,108,249,0.5); transition:transform .15s,box-shadow .15s; }
+    .btn-main:hover { transform:translateY(-2px); box-shadow:0 8px 36px rgba(91,108,249,0.65); }
+    .btn-sec { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text2); text-decoration:none; padding:16px 28px; border-radius:12px; font-size:15px; font-weight:500; transition:background .15s,color .15s; }
+    .btn-sec:hover { background:rgba(255,255,255,0.1); color:var(--text1); }
+    .hero-note { margin-top:20px; font-size:13px; color:var(--text3); }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,108,249,0.22) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(91,108,249,0.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(91,108,249,0.12);
-      border: 1px solid rgba(91,108,249,0.3);
-      color: var(--primary-light);
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      margin-bottom: 28px;
-    }
-
-    .hero-badge span { width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: inline-block; }
-
-    .hero-logo {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
-      margin-bottom: 32px;
-      box-shadow: 0 12px 48px rgba(91,108,249,0.4);
-    }
-
-    .hero h1 {
-      font-size: 64px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1.1;
-      background: linear-gradient(135deg, #fff 30%, #8b9dff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      color: var(--text2);
-      line-height: 1.7;
-      max-width: 480px;
-      margin: 0 auto 48px;
-    }
-
-    .hero-btns {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-main {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #5b6cf9, #4a5ce0);
-      color: #fff;
-      text-decoration: none;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 4px 24px rgba(91,108,249,0.5);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .btn-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 36px rgba(91,108,249,0.65);
-    }
-
-    .btn-sec {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      color: var(--text2);
-      text-decoration: none;
-      padding: 16px 28px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 500;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .btn-sec:hover { background: rgba(255,255,255,0.1); color: var(--text1); }
-
-    .hero-note {
-      margin-top: 20px;
-      font-size: 13px;
-      color: var(--text3);
-    }
+    /* SECTION */
+    .section { padding:96px 24px; max-width:1080px; margin:0 auto; }
+    .section-label { text-align:center; font-size:13px; font-weight:600; color:var(--primary-light); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px; }
+    .section-title { text-align:center; font-size:38px; font-weight:800; letter-spacing:-1px; margin-bottom:14px; }
+    .section-desc { text-align:center; font-size:16px; color:var(--text2); margin-bottom:56px; }
 
     /* FEATURES */
-    .section {
-      padding: 96px 24px;
-      max-width: 1080px;
-      margin: 0 auto;
-    }
+    .feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .feat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; transition:border-color .2s,transform .2s; }
+    .feat-card:hover { border-color:rgba(91,108,249,0.4); transform:translateY(-3px); }
+    .feat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+    .feat-card h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
+    .feat-card p { font-size:14px; color:var(--text2); line-height:1.6; }
 
-    .section-label {
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--primary-light);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 38px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      margin-bottom: 14px;
-    }
-
-    .section-desc {
-      text-align: center;
-      font-size: 16px;
-      color: var(--text2);
-      margin-bottom: 56px;
-    }
-
-    .feat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .feat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .feat-card:hover {
-      border-color: rgba(91,108,249,0.4);
-      transform: translateY(-3px);
-    }
-
-    .feat-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 18px;
-    }
-
-    .feat-card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .feat-card p {
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.6;
-    }
-
-    /* PREVIEW */
-    .preview-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
-    }
-
-    .preview-bar {
-      background: var(--surface2);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .dot { width: 12px; height: 12px; border-radius: 50%; }
-
-    .preview-img {
-      width: 100%;
-      display: block;
-      background: linear-gradient(135deg, #12121e 0%, #1a1a2e 100%);
-      min-height: 360px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text3);
-      font-size: 15px;
-    }
+    /* CHANGELOG */
+    .cl-list { display:flex; flex-direction:column; }
+    .cl-item { display:grid; grid-template-columns:160px 1fr; gap:24px; padding:28px 0; border-bottom:1px solid var(--border); }
+    .cl-item:last-child { border-bottom:none; }
+    .cl-left { display:flex; flex-direction:column; gap:8px; padding-top:2px; }
+    .cl-ver { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:800; padding:4px 12px; border-radius:6px; width:fit-content; }
+    .cl-ver.latest { background:rgba(91,108,249,0.2); color:var(--primary-light); border:1px solid rgba(91,108,249,0.3); }
+    .cl-ver.stable { background:rgba(74,222,128,0.12); color:#4ade80; border:1px solid rgba(74,222,128,0.2); }
+    .cl-ver.fix { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
+    .cl-date { font-size:12px; color:var(--text3); }
+    .cl-right h4 { font-size:15px; font-weight:700; margin-bottom:10px; }
+    .cl-changes { list-style:none; display:flex; flex-direction:column; gap:6px; }
+    .cl-changes li { display:flex; align-items:flex-start; gap:8px; font-size:14px; color:var(--text2); line-height:1.5; }
+    .cl-changes li::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--primary); flex-shrink:0; margin-top:8px; }
 
     /* DOWNLOAD */
-    .download-section {
-      padding: 96px 24px;
-      text-align: center;
-      position: relative;
-    }
+    .download-section { padding:96px 24px; text-align:center; position:relative; }
+    .download-section .bg2 { position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(91,108,249,0.1) 0%, transparent 70%); pointer-events:none; }
+    .dl-box { position:relative; max-width:560px; margin:0 auto; background:var(--surface); border:1px solid rgba(91,108,249,0.3); border-radius:24px; padding:48px; }
+    .dl-box h2 { font-size:32px; font-weight:800; margin-bottom:12px; }
+    .dl-box > p { color:var(--text2); margin-bottom:36px; font-size:15px; line-height:1.6; }
+    .dl-btns { display:flex; flex-direction:column; gap:12px; }
+    .dl-main { display:flex; align-items:center; justify-content:center; gap:12px; background:linear-gradient(135deg,#5b6cf9,#4a5ce0); color:#fff; text-decoration:none; padding:18px; border-radius:12px; font-size:16px; font-weight:700; box-shadow:0 4px 24px rgba(91,108,249,0.45); transition:transform .15s,box-shadow .15s; }
+    .dl-main:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(91,108,249,0.6); }
+    .dl-portable { display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text2); text-decoration:none; padding:13px; border-radius:10px; font-size:14px; font-weight:500; transition:background .15s,color .15s; }
+    .dl-portable:hover { background:rgba(255,255,255,0.08); color:var(--text1); }
+    .dl-meta { margin-top:16px; font-size:12px; color:var(--text3); }
 
-    .download-section .bg2 {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(91,108,249,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    /* SUPPORT */
+    .support-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
+    .support-info h3 { font-size:20px; font-weight:700; margin-bottom:12px; }
+    .support-info p { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:20px; }
+    .support-tips { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .support-tips li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--text2); line-height:1.5; }
+    .support-tips li svg { flex-shrink:0; margin-top:1px; }
+    .support-form-wrap { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:32px; }
+    .support-form-wrap h3 { font-size:18px; font-weight:700; margin-bottom:24px; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:13px; font-weight:600; color:var(--text2); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text1); font-size:14px; font-family:inherit; padding:10px 14px; outline:none; transition:border-color .15s; appearance:none; -webkit-appearance:none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--primary); }
+    .form-group textarea { resize:vertical; min-height:120px; }
+    .form-group select { cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239090b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
+    .form-submit { width:100%; background:linear-gradient(135deg,#5b6cf9,#4a5ce0); color:#fff; border:none; border-radius:10px; padding:14px; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .15s; font-family:inherit; margin-top:4px; }
+    .form-submit:hover { opacity:.85; }
+    .form-success { display:none; text-align:center; padding:32px 16px; }
+    .form-success .check-ic { width:56px; height:56px; background:rgba(74,222,128,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+    .form-success h4 { font-size:18px; font-weight:700; margin-bottom:8px; }
+    .form-success p { font-size:14px; color:var(--text2); }
 
-    .dl-box {
-      position: relative;
-      max-width: 560px;
-      margin: 0 auto;
-      background: var(--surface);
-      border: 1px solid rgba(91,108,249,0.3);
-      border-radius: 24px;
-      padding: 48px;
-    }
-
-    .dl-box h2 {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .dl-box p {
-      color: var(--text2);
-      margin-bottom: 36px;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .dl-btns {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .dl-main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      background: linear-gradient(135deg, #5b6cf9, #4a5ce0);
-      color: #fff;
-      text-decoration: none;
-      padding: 18px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 4px 24px rgba(91,108,249,0.45);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .dl-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(91,108,249,0.6);
-    }
-
-    .dl-portable {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      color: var(--text2);
-      text-decoration: none;
-      padding: 13px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .dl-portable:hover { background: rgba(255,255,255,0.08); color: var(--text1); }
-
-    .dl-meta {
-      margin-top: 16px;
-      font-size: 12px;
-      color: var(--text3);
-    }
+    /* DONATION */
+    .donation-wrap { padding:64px 24px; max-width:520px; margin:0 auto; }
+    .donation-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:40px; text-align:center; position:relative; overflow:hidden; }
+    .donation-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(251,191,36,0.06) 0%, transparent 70%); pointer-events:none; }
+    .donation-icon { width:52px; height:52px; border-radius:14px; background:rgba(251,191,36,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+    .donation-card h3 { font-size:22px; font-weight:800; margin-bottom:8px; }
+    .donation-card > p { font-size:14px; color:var(--text2); margin-bottom:28px; line-height:1.6; }
+    .donation-info { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:20px 24px; text-align:left; margin-bottom:16px; }
+    .d-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; }
+    .d-row + .d-row { border-top:1px solid var(--border); }
+    .d-label { font-size:12px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+    .d-val { font-size:15px; font-weight:600; }
+    .d-acct { font-size:17px; font-weight:800; letter-spacing:1px; color:var(--primary-light); }
+    .copy-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; background:rgba(91,108,249,0.1); border:1px solid rgba(91,108,249,0.25); border-radius:10px; color:var(--primary-light); font-size:14px; font-weight:600; padding:12px; cursor:pointer; transition:background .15s; font-family:inherit; }
+    .copy-btn:hover { background:rgba(91,108,249,0.18); }
+    .donation-note { font-size:12px; color:var(--text3); margin-top:14px; }
 
     /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
+    footer { border-top:1px solid var(--border); padding:32px 48px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .footer-logo { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color:var(--text2); }
+    .footer-logo img { width:24px; height:24px; border-radius:6px; }
+    footer p { font-size:13px; color:var(--text3); }
+    .footer-links { display:flex; gap:20px; align-items:center; }
+    .footer-gh { display:flex; align-items:center; gap:6px; color:var(--text2); text-decoration:none; font-size:13px; transition:color .15s; }
+    .footer-gh:hover { color:var(--text1); }
 
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text2);
-    }
-
-    .footer-logo img { width: 24px; height: 24px; border-radius: 6px; }
-
-    footer p { font-size: 13px; color: var(--text3); }
-
-    .footer-gh {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text2);
-      text-decoration: none;
-      font-size: 13px;
-      transition: color 0.15s;
-    }
-
-    .footer-gh:hover { color: var(--text1); }
-
-    /* DIVIDER */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
+    .divider { border:none; border-top:1px solid var(--border); margin:0; }
 
     @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
-      .hero h1 { font-size: 40px; }
-      .feat-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; align-items: flex-start; }
+      nav { padding:0 20px; }
+      .nav-links { display:none; }
+      .hero h1 { font-size:40px; }
+      .feat-grid { grid-template-columns:1fr; }
+      .cl-item { grid-template-columns:1fr; gap:10px; }
+      .support-grid { grid-template-columns:1fr; }
+      footer { flex-direction:column; align-items:flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#">
-      <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI">
-      UNI Client
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI">
+    UNI Client
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">기능</a></li>
+    <li><a href="#changelog">업데이트</a></li>
+    <li><a href="#download">다운로드</a></li>
+    <li><a href="#support">고객센터</a></li>
+    <li><a href="https://github.com/jjw0327710/uni-client" target="_blank">GitHub</a></li>
+  </ul>
+  <a class="nav-dl" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">Download</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge"><span></span> 최신 버전 · Windows x64</div>
+  <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI Client" class="hero-logo">
+  <h1>UNI Client</h1>
+  <p>마인크래프트 전용 런처.<br>Microsoft 계정 로그인부터 자동 업데이트, 모드 관리까지.</p>
+  <div class="hero-btns">
+    <a class="btn-main" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
     </a>
-    <ul class="nav-links">
-      <li><a href="#features">??れ삀???/a></li>
-      <li><a href="#download">???源낅??棺??짆?삠궘?/a></li>
-      <li><a href="https://github.com/jjw0327710/uni-client" target="_blank">GitHub</a></li>
-    </ul>
-    <a class="nav-dl" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">Download</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-badge"><span></span> ???嶺?勇?Windows x64</div>
-    <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI Client" class="hero-logo">
-    <h1>UNI Client</h1>
-    <p>癲ル슢????????ш낄援θキ??????熬곥걿????鴉????Ъ?<br>Microsoft ??節뚮쳮????⑥???袁⑸즴??繞???筌믨퀣援??筌뚯뼚???</p>
-    <div class="hero-btns">
-      <a class="btn-main" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Download
-      </a>
-      <a class="btn-sec" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.1.0.6.zip">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-        </svg>
-        GitHub
-      </a>
-    </div>
-    <p class="hero-note">Windows 10/11 勇????嶺?/p>
-  </section>
-
-  <hr class="divider">
-
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="section-label">??れ삀???/div>
-    <h2 class="section-title">??ш끽維???癲??????怨?????덊렡</h2>
-    <p class="section-desc">癲ル슢????????ш낄援θキ??癲ル슣鍮뽱슙???????ш끽維?????れ삀?????源낃도 ?????산콡???</p>
-
-    <div class="feat-grid">
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(91,108,249,0.15);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <h3>Microsoft ??節뚮쳮???棺??짆???/h3>
-        <p>??怨쀫뮛???? ??獄쏅챷逾???⑥????鴉????Ъ??棺??짆??? ?嶺뚮쮳? ?嶺뚮ㅎ?댐ℓ???ш끽維?????節뚮쳮???????袁⑸즴??繞???筌믨퀣援?</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(74,222,128,0.12);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3>Fabric ???筌?????몃?</h3>
-        <p>??ш끽維곩ㅇ????앗낆땡??쒖맄??Fabric?????筌???⑥??????몃?. ?類???????ャ뀕???딅텑???????덈틖嚥싲갭큔?? ??誘⑦쀦틦??</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(251,191,36,0.12);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        </div>
-        <h3>?濚밸Ŧ援앲짆?癲ル슔?됭짆???/h3>
-        <p>Sodium + Lithium 癲ル슢?꾤땟????ｏ쭗???誘⑦쀦틦??????몃?. ??????PC????????蹂?뮝?????곕쿊.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(96,165,250,0.12);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="3"/></svg>
-        </div>
-        <h3>???щ뮡嶺뚮ㅏ?삥????녹낮????筌?六?/h3>
-        <p>?濡ろ뜐????????щ뮡嶺?? ?袁⑸즴?????딅룱?????袁⑸젻泳?떑?????釉먮뻤?????筌?六? 癲ル슢?꾤땟??????筌?????몃?.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(74,222,128,0.12);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
-        </div>
-        <h3>Simple Voice Chat</h3>
-        <p>?嶺뚮∥梨????????癲????癲ル슢?꾤땟??????筌?????몃?. ?怨멸땀獒????됰씧???袁⑸즴??繞?????????嶺뚮ㅎ???</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon" style="background:rgba(244,114,182,0.12);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        </div>
-        <h3>???袁⑹뵫?繹먭퍗?節뉖뙀?/h3>
-        <p>F2??癲ル슔?蹂?뎔? ???袁⑹뵫?繹먭퍗?節뉖뙀?????Β?諭??????袁⑸즴??繞??嶺뚮Ĳ?됮? ?????????깅탿?????類???산덩?</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- DOWNLOAD -->
-  <section class="download-section" id="download">
-    <div class="bg2"></div>
-    <div class="dl-box">
-      <h2>癲ル슣?????袁⑸즴??繞???筌믨퀣援??筌뚯뼚???/h2>
-      <p>???嶺뚯빖??????源낅??棺??짆?삠궘???寃뗏?br>癲ル슢????????ш낄援θキ??癲ル슣鍮뽱슙??嶺뚮ㅎ???</p>
-      <div class="dl-btns">
-        <a class="dl-main" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          Download
-        </a>
-        <a class="dl-portable" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.1.0.6.zip">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="3" width="20" height="14" rx="2"/>
-            <line x1="8" y1="21" x2="16" y2="21"/>
-            <line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          ???臾뺥맆???類????ZIP (????몃? ???⑤챶??????덈틖)
-        </a>
-      </div>
-      <p class="dl-meta">v1.0.3 勇?Windows 10/11 x64 勇????嶺?/p>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">
-      <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI">
-      UNI Client
-    </div>
-    <p>嶺?2025 UNI Client. All rights reserved.</p>
-    <a class="footer-gh" href="https://github.com/jjw0327710/uni-client" target="_blank">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-      </svg>
+    <a class="btn-sec" href="https://github.com/jjw0327710/uni-client" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
       GitHub
     </a>
-  </footer>
+  </div>
+  <p class="hero-note">Windows 10/11 이상 지원</p>
+</section>
 
+<hr class="divider">
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">기능</div>
+  <h2 class="section-title">필요한 건 모두 여기에</h2>
+  <p class="section-desc">마인크래프트를 즐기기 위한 모든 기능을 한 곳에서 관리하세요.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(91,108,249,0.15);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h3>Microsoft 계정 로그인</h3>
+      <p>브라우저에서 한 번에 로그인. 자동으로 토큰을 갱신하여 재로그인 없이 계정이 유지됩니다.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(74,222,128,0.12);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Fabric 자동 설치 및 모드 관리</h3>
+      <p>원하는 버전의 Fabric 로더를 자동으로 설치하고, Modrinth에서 모드를 검색해 바로 추가할 수 있습니다.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(251,191,36,0.12);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3>성능 최적화 모드</h3>
+      <p>Sodium + Lithium 기반 최적화 모드를 한 번에 설치. 낮은 사양의 PC에서도 쾌적하게 즐길 수 있습니다.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(96,165,250,0.12);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <h3>좌표 및 네비게이션 모드</h3>
+      <p>화면에 현재 좌표를 표시하고 목적지까지 네비게이션 기능을 사용할 수 있는 모드를 바로 설치합니다.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(74,222,128,0.12);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
+      </div>
+      <h3>Simple Voice Chat</h3>
+      <p>서버 내 음성 채팅 모드를 한 번에 설치. 별도 설정 없이 같은 서버에서 바로 음성 통화를 사용할 수 있습니다.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(244,114,182,0.12);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <h3>스크린샷 뷰어</h3>
+      <p>F2로 찍은 스크린샷을 런처 내에서 바로 확인. 폴더 열기도 지원하여 빠르게 파일에 접근할 수 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CHANGELOG -->
+<section class="section" id="changelog">
+  <div class="section-label">업데이트 내역</div>
+  <h2 class="section-title">버전 히스토리</h2>
+  <p class="section-desc">UNI Client의 모든 업데이트 내역을 확인하세요.</p>
+  <div class="cl-list">
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver latest">v1.0.6 <span style="font-size:10px;background:rgba(91,108,249,0.35);padding:1px 6px;border-radius:3px;margin-left:2px;">최신</span></div>
+        <div class="cl-date">2026.05.27</div>
+      </div>
+      <div class="cl-right">
+        <h4>홈 화면 개선</h4>
+        <ul class="cl-changes">
+          <li>홈 배너에 실제 이미지 표시 (이미지 없을 시 그라데이션으로 대체)</li>
+          <li>사이드바에 업데이트 다운로드 진행 상태 실시간 표시</li>
+          <li>버그 수정 및 안정성 개선</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver stable">v1.0.5</div>
+        <div class="cl-date">2026.05.27</div>
+      </div>
+      <div class="cl-right">
+        <h4>묶음 파일 및 UI 전면 개편</h4>
+        <ul class="cl-changes">
+          <li>묶음 파일 (프리셋) 기능 추가 — 모드+리소스팩을 한 번에 설치</li>
+          <li>파일 카테고리 신설 (사이드바)</li>
+          <li>사이드바 카테고리 순서 개편 (모드 → 리소스팩 → 파일 → 설정)</li>
+          <li>모드 없을 때 자동으로 바닐라 마인크래프트로 실행</li>
+          <li>기능 토글 초기값 OFF로 변경</li>
+          <li>재설치 시 로그인 자동 초기화 / 업데이트 시 로그인 유지</li>
+          <li>"계정 변경" 버튼을 "프로필 변경"으로 수정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver fix">v1.0.4</div>
+        <div class="cl-date">2026.05.27</div>
+      </div>
+      <div class="cl-right">
+        <h4>버그 수정</h4>
+        <ul class="cl-changes">
+          <li>버그 수정 및 안정성 개선</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver fix">v1.0.3</div>
+        <div class="cl-date">2026.05.27</div>
+      </div>
+      <div class="cl-right">
+        <h4>서버 및 스크린샷</h4>
+        <ul class="cl-changes">
+          <li>서버 즐겨찾기 추가 및 관리 기능</li>
+          <li>스크린샷 뷰어 추가</li>
+          <li>버그 수정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver fix">v1.0.2</div>
+        <div class="cl-date">2026.05.27</div>
+      </div>
+      <div class="cl-right">
+        <h4>모드 및 리소스팩 관리</h4>
+        <ul class="cl-changes">
+          <li>프로필별 모드 폴더 분리 관리</li>
+          <li>리소스팩 설치 및 관리 기능 추가</li>
+          <li>Simple Voice Chat 모드 지원 추가</li>
+          <li>버그 수정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver fix">v1.0.1</div>
+        <div class="cl-date">2026.05.26</div>
+      </div>
+      <div class="cl-right">
+        <h4>자동 업데이트 및 안정화</h4>
+        <ul class="cl-changes">
+          <li>자동 업데이트 기능 추가 (electron-updater)</li>
+          <li>스플래시 화면 추가</li>
+          <li>여러 계정 프로필 관리 기능</li>
+          <li>초기 버그 수정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-left">
+        <div class="cl-ver fix">v1.0.0</div>
+        <div class="cl-date">2026.05</div>
+      </div>
+      <div class="cl-right">
+        <h4>최초 출시</h4>
+        <ul class="cl-changes">
+          <li>Microsoft 계정 로그인 지원</li>
+          <li>Minecraft 자동 설치 및 실행</li>
+          <li>Fabric 모드 로더 자동 설치</li>
+          <li>기본 런처 UI (홈, 플레이, 기능, 스킨, 설정)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DOWNLOAD -->
+<section class="download-section" id="download">
+  <div class="bg2"></div>
+  <div class="dl-box">
+    <h2>지금 바로 시작하세요</h2>
+    <p>무료로 다운로드하고<br>마인크래프트를 더 편리하게 즐기세요.</p>
+    <div class="dl-btns">
+      <a class="dl-main" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.Setup.1.0.6.exe">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </a>
+      <a class="dl-portable" href="https://github.com/jjw0327710/uni-client/releases/latest/download/UNI.Client.1.0.6.zip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        포터블 버전 ZIP (설치 없이 바로 실행)
+      </a>
+    </div>
+    <p class="dl-meta">v1.0.6 · Windows 10/11 x64 이상</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SUPPORT -->
+<section class="section" id="support">
+  <div class="section-label">고객센터</div>
+  <h2 class="section-title">버그 신고 및 문의</h2>
+  <p class="section-desc">버그를 발견하셨나요? 아래 양식으로 신고해 주세요.</p>
+
+  <div class="support-grid">
+    <div class="support-info">
+      <h3>문의 안내</h3>
+      <p>사용 중 문제가 생기면 아래 양식을 이용해 주세요.<br>최대한 빠르게 확인하고 수정하겠습니다.</p>
+      <ul class="support-tips">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.92 2.18 2 2 0 012.92 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          버그 발생 당시 상황을 최대한 자세히 적어주세요.
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          현재 사용 중인 런처 버전을 꼭 선택해 주세요.
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b6cf9" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          재현 방법이 있다면 함께 적어주시면 더 빠르게 수정할 수 있어요.
+        </li>
+      </ul>
+    </div>
+
+    <div class="support-form-wrap">
+      <h3>버그 신고</h3>
+      <div id="form-success" class="form-success">
+        <div class="check-ic">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4>신고가 접수됐습니다!</h4>
+        <p>확인 후 빠르게 수정하겠습니다. 감사합니다.</p>
+      </div>
+      <form id="support-form" action="https://formsubmit.co/jjw0327710@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="[UNI Client] 버그 신고">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://uni-client.kro.kr/?sent=1#support">
+        <div class="form-group">
+          <label>닉네임 (선택)</label>
+          <input type="text" name="nickname" placeholder="마인크래프트 닉네임">
+        </div>
+        <div class="form-group">
+          <label>런처 버전 <span style="color:var(--red)">*</span></label>
+          <select name="version" required>
+            <option value="">버전 선택...</option>
+            <option>v1.0.6</option>
+            <option>v1.0.5</option>
+            <option>v1.0.4</option>
+            <option>v1.0.3</option>
+            <option>v1.0.2</option>
+            <option>v1.0.1</option>
+            <option>v1.0.0</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>버그 내용 <span style="color:var(--red)">*</span></label>
+          <textarea name="description" placeholder="버그 발생 상황, 재현 방법, 오류 메시지 등을 적어주세요." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">신고하기</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DONATION -->
+<div class="donation-wrap" id="donation">
+  <div class="section-label" style="text-align:center;margin-bottom:32px;">후원</div>
+  <div class="donation-card">
+    <div class="donation-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    </div>
+    <h3>UNI Client 후원</h3>
+    <p>UNI Client는 무료로 제공됩니다.<br>개발을 응원해 주신다면 작은 후원이 큰 힘이 됩니다.</p>
+    <div class="donation-info">
+      <div class="d-row">
+        <span class="d-label">은행</span>
+        <span class="d-val">토스뱅크</span>
+      </div>
+      <div class="d-row">
+        <span class="d-label">계좌번호</span>
+        <span class="d-acct">1002-5618-6849</span>
+      </div>
+      <div class="d-row">
+        <span class="d-label">예금주</span>
+        <span class="d-val">전정우</span>
+      </div>
+    </div>
+    <button class="copy-btn" onclick="copyAccount()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      <span id="copy-text">계좌번호 복사</span>
+    </button>
+    <p class="donation-note">후원금은 서버 유지 및 개발에 사용됩니다. 감사합니다 ♥</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="https://raw.githubusercontent.com/jjw0327710/uni-client/main/assets/logo.png" alt="UNI">
+    UNI Client
+  </div>
+  <p>© 2026 UNI Client. All rights reserved.</p>
+  <div class="footer-links">
+    <a class="footer-gh" href="#support">고객센터</a>
+    <a class="footer-gh" href="https://github.com/jjw0327710/uni-client" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</footer>
+
+<script>
+  function copyAccount() {
+    navigator.clipboard.writeText('1002-5618-6849').then(() => {
+      const el = document.getElementById('copy-text');
+      el.textContent = '복사됐습니다!';
+      setTimeout(() => { el.textContent = '계좌번호 복사'; }, 2000);
+    });
+  }
+
+  if (new URLSearchParams(location.search).get('sent') === '1') {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('support-form').style.display = 'none';
+    history.replaceState({}, '', '/#support');
+  }
+</script>
 </body>
 </html>
